@@ -60,6 +60,7 @@
 		"esm-env": "^1.0.0",
 		"firebase": "^10.4.0",
 		"gsap": "^3.12.2",
+		"pixi.js": "^7.3.1",
 		"prism-svelte": "^0.5.0",
 		"prism-themes": "^1.9.0"
 	}

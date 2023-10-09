@@ -7,20 +7,15 @@
 	import { Camera } from '../Camera';
 
 	// Stores
-	import { cameraStore, entitiesStore } from '../stores';
-
 	let elemCanvas: HTMLCanvasElement;
 	const loading: any = { amount: 0, complete: false };
 
 	// Game Elements
 	let app: Application;
-	let containerLevel: Container;
-	let world: World;
-	let camera: Camera;
 
 	onMount(async () => {
 		// Pixi.js Settings
-		settings.SCALE_MODE = SCALE_MODES.NEAREST;
+		// settings.SCALE_MODE = SCALE_MODES.NEAREST;
 
 		// Init Game App
 		app = new Application({
@@ -32,7 +27,6 @@
 
 		// Load Game Resources
 		const overworldTexture = await Assets.load('/images/dojo/overworld.png');
-		// app.stage.addChild(overworldTexture);
 
 		// Containers
 		const containerLevel = new Container();
@@ -46,10 +40,6 @@
 
 		// Add to Stage
 		app.stage.addChild(containerLevel);
-
-		// On app launch, lock camera on Chris and start dialog.
-		// cameraStore.set({ type: 'entity', target: npcs[0], animate: false }); // npcs Chris
-		// setTimeout(() => { npcs[0].onPointerDown(); }, 500);
 
 		// Animation Loop
 		let elapsed = 0.0;

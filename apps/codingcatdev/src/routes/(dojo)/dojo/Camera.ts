@@ -12,8 +12,8 @@ export class Camera {
 	private lastDragPosition: { x: number, y: number } | null = null;
 
 	// Camera Transition
-	private startPosition = { x: null, y: null };
-	private endPosition = { x: null, y: null };
+	private startPosition: { x: null | number, y: null | number } = { x: null, y: null };
+	private endPosition: { x: null | number, y: null | number } = { x: null, y: null };
 	private cameraSpeed = 25;
 
 	constructor(config: { app: Application, container: Container }) {
@@ -133,8 +133,8 @@ export class Camera {
 		this.endPosition = { x: targetX, y: targetY };
 	}
 
-	transitionPositionCoords(axis: string): void {
-		if (this.endPosition[axis] !== null) {
+	transitionPositionCoords(axis: keyof typeof this.endPosition): void {
+		if (this.endPosition?.[axis] !== null && this.startPosition?.[axis] !== null) {
 			// Use inverse linear interpolation to determine progress between start/end
 			// This includes a clamp to prevent overshooting the target, will return 0-100%
 			const progressRemaining = invlerp(this.endPosition[axis], this.startPosition[axis], this.position[axis]) * 100;
@@ -145,9 +145,13 @@ export class Camera {
 				this.adjustForWorldBounds(); // just in case
 			} else {
 				// Increase/decrease amount based on direction
-				this.endPosition[axis] <= this.startPosition[axis]
-					? (this.position[axis] -= this.cameraSpeed)
-					: (this.position[axis] += this.cameraSpeed);
+				const end = this.endPosition[axis];
+				const start = this.startPosition[axis];
+				if (typeof end === 'number' && typeof start === 'number') {
+					end <= start
+						? (this.position[axis] -= this.cameraSpeed)
+						: (this.position[axis] += this.cameraSpeed);
+				}
 			}
 		}
 	}
